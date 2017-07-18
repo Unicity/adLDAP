@@ -102,9 +102,9 @@ class adLDAPUtils {
     * @return string
     */
     public function ldapSlashes($str){
-        return preg_replace('/([\x00-\x1F\*\(\)\\\\])/e',
-                            '"\\\\\".join("",unpack("H2","$1"))',
-                            $str);
+        return preg_replace_callback('/([\x00-\x1F\*\(\)\\\\])/', function($match) {
+			return "\\" . implode('', unpack('H2', "$match[1]"));
+		}, $str);
     }
     
     /**
